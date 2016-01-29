@@ -3,6 +3,9 @@ from __future__ import absolute_import
 import logging
 import warnings
 
+from pip import cmdoptions
+from pip.req import RequirementSet
+from pip.basecommand import RequirementCommand
 from pip.basecommand import Command
 from pip.exceptions import CommandError
 from pip.index import PackageFinder
@@ -15,7 +18,7 @@ from pip.cmdoptions import make_option_group, index_group
 logger = logging.getLogger(__name__)
 
 
-class ListCommand(Command):
+class ListCommand(RequirementCommand):
     """
     List installed packages, including editables.
 
@@ -30,6 +33,7 @@ class ListCommand(Command):
         super(ListCommand, self).__init__(*args, **kw)
 
         cmd_opts = self.cmd_opts
+        cmd_opts.add_option(cmdoptions.requirements())
 
         cmd_opts.add_option(
             '-o', '--outdated',
